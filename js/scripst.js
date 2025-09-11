@@ -1,7 +1,6 @@
-// Create a new variable called pokemonList and assign it a blank array
-let pokemonList = [];
+const pokemonList = [];
 
-// Add Pokémon objects to the array
+// Adding Pokémon objects to the array
 pokemonList.push({
   name: "Bulbasaur",
   height: 7,
@@ -9,9 +8,9 @@ pokemonList.push({
 });
 
 pokemonList.push({
-  name: "Charmander",
-  height: 6,
-  types: ["fire"],
+  name: "Charizard",
+  height: 17,
+  types: ["fire", "flying"],
 });
 
 pokemonList.push({
@@ -19,3 +18,20 @@ pokemonList.push({
   height: 5,
   types: ["water"],
 });
+
+// Loop through each Pokémon in the pokemonList array
+for (let i = 0; i < pokemonList.length; i++) {
+  const pokemon = pokemonList[i]; // Get the current Pokémon object
+  let output = `${pokemon.name} (height: ${pokemon.height})`; // Create the output string
+
+  // Conditional to check if the height is above a certain value
+  if (pokemon.height > 10) {
+    // You can change the value 10 to whatever you prefer
+    output += " - Wow, that’s big!"; // Add the special note if the condition is met
+  }
+
+  // Write the output to the DOM
+  document.write(output + "<br>"); // Use <br> for line breaks
+}
+
+
