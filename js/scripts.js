@@ -1,23 +1,21 @@
-const pokemonList = [];
+const pokemonList = [
+  {
+    name: "Bulbasaur",
+    height: 7,
+    types: ["grass", "poison"],
+  },
+  {
+    name: "Charizard",
+    height: 17,
+    types: ["fire", "flying"],
+  },
+  {
+    name: "Squirtle",
+    height: 5,
+    types: ["water"],
+  },
+];
 
-// Adding Pokémon objects to the array
-pokemonList.push({
-  name: "Bulbasaur",
-  height: 7,
-  types: ["grass", "poison"],
-});
-
-pokemonList.push({
-  name: "Charizard",
-  height: 17,
-  types: ["fire", "flying"],
-});
-
-pokemonList.push({
-  name: "Squirtle",
-  height: 5,
-  types: ["water"],
-});
 
 // Loop through each Pokémon in the pokemonList array
 for (let i = 0; i < pokemonList.length; i++) {
