@@ -1,5 +1,5 @@
 // IIFE to encapsulate the pokemonList and expose functions
-const pokemonRepository = (function () {
+let pokemonRepository = (function () {
   // Private array to store Pokémon
   let pokemonList = [
     {
@@ -59,9 +59,3 @@ pokemonRepository.add({
   height: 4,
   types: ["electric"],
 });
-
-  // Write the output to the DOM
-  document.write(output + "<br>"); // Use <br> for line breaks
-}
-
-
