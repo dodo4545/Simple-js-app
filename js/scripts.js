@@ -1,6 +1,4 @@
-// IIFE to encapsulate the pokemonList and expose functions
-let pokemonRepository = (function () {
-  // Private array to store Pokémon
+const pokemonRepository = (function () {
   let pokemonList = [
     {
       name: "Bulbasaur",
@@ -19,43 +17,56 @@ let pokemonRepository = (function () {
     },
   ];
 
-  // Public function to return all Pokémon
   function getAll() {
-    return pokemonList;
+    return pokemonList; // return the pokemonList array
   }
 
-  // Public function to add a Pokémon
   function add(item) {
-    if (typeof item === "object" && "name" in item) {
-      pokemonList.push(item);
-    } else {
-      console.log("Invalid Pokémon item");
+    if (item && typeof item === "object") {
+      pokemonList.push(item); // add the Pokémon to the pokemonList array
     }
   }
 
-  // Expose public methods
+  // Function to add a list item to the DOM for each Pokémon
+  function addListItem(pokemon) {
+    const list = document.querySelector(".pokemon-list"); // Assuming there's a ul with class "pokemon-list"
+
+    // Create a list item and button for each Pokémon
+    const listItem = document.createElement("li");
+    const button = document.createElement("button");
+
+    button.innerText = pokemon.name; // Set button text to Pokémon name
+    button.classList.add("pokemon-button"); // Optional: add a class for styling
+
+    // Add button to the list item
+    listItem.appendChild(button); // Append button to list item
+
+    // Call the function to add an event listener to the button
+    addButtonListener(button, pokemon);
+
+    list.appendChild(listItem); // Append list item to the list
+  }
+
+  // Function to add an event listener to the button
+  function addButtonListener(button, pokemon) {
+    button.addEventListener("click", function () {
+      showDetails(pokemon); // Call showDetails with the current Pokémon
+    });
+  }
+
+  // Function to show details of the Pokémon
+  function showDetails(pokemon) {
+    console.log(pokemon); // Log the Pokémon object to the console
+  }
+
   return {
     getAll: getAll,
     add: add,
+    addListItem: addListItem, // Expose addListItem function
   };
 })();
 
-// Using forEach() to iterate over each Pokémon
-pokemonRepository.getAll().forEach(function (pokemon) {
-  let output = `${pokemon.name} (height: ${pokemon.height})`;
-
-  // Conditional to check if the height is above a certain value
-  if (pokemon.height > 10) {
-    output += " - Wow, that’s big!";
-  }
-
-  // Write the output to the DOM
-  document.write(output + "<br>"); // Use <br> for line breaks
-});
-
-// Example of adding a new Pokémon
-pokemonRepository.add({
-  name: "Pikachu",
-  height: 4,
-  types: ["electric"],
+// Using forEach to loop through each Pokémon in the repository and add to the DOM
+pokemonRepository.getAll().forEach((pokemon) => {
+  pokemonRepository.addListItem(pokemon); // Call addListItem for each Pokémon
 });
