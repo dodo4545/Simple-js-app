@@ -1,21 +1,5 @@
 const pokemonRepository = (function () {
-  let pokemonList = [
-    {
-      name: "Bulbasaur",
-      height: 7,
-      types: ["grass", "poison"],
-    },
-    {
-      name: "Charizard",
-      height: 17,
-      types: ["fire", "flying"],
-    },
-    {
-      name: "Squirtle",
-      height: 5,
-      types: ["water"],
-    },
-  ];
+  let pokemonList = [];
 
   function getAll() {
     return pokemonList; // return the pokemonList array
@@ -27,11 +11,40 @@ const pokemonRepository = (function () {
     }
   }
 
+  // Load the complete list of Pokémon from the API
+  function loadList() {
+    return (
+      fetch("https://pokeapi.co/api/v2/pokemon/")
+        // limit to 150 for simplicity
+        .then((response) => response.json())
+        .then((data) => {
+          data.results.forEach((pokemon) => {
+            add({
+              name: pokemon.name,
+              detailsUrl: pokemon.url, // Store the URL for details
+            });
+          });
+        })
+        .catch((error) => console.error(error))
+    );
+  }
+
+  // Load details for a specific Pokémon
+  function loadDetails(pokemon) {
+    const url = pokemon.detailsUrl; // Use the URL from the Pokémon object
+    return fetch(url)
+      .then((response) => response.json())
+      .then((details) => {
+        // Assign details to the Pokémon object
+        pokemon.height = details.height;
+        pokemon.imgUrl = details.sprites.front_default; // Assign image URL
+      })
+      .catch((error) => console.error(error));
+  }
+
   // Function to add a list item to the DOM for each Pokémon
   function addListItem(pokemon) {
     const list = document.querySelector(".pokemon-list"); // Assuming there's a ul with class "pokemon-list"
-
-    // Create a list item and button for each Pokémon
     const listItem = document.createElement("li");
     const button = document.createElement("button");
 
@@ -39,7 +52,7 @@ const pokemonRepository = (function () {
     button.classList.add("pokemon-button"); // Optional: add a class for styling
 
     // Add button to the list item
-    listItem.appendChild(button); // Append button to list item
+    listItem.appendChild(button);
 
     // Call the function to add an event listener to the button
     addButtonListener(button, pokemon);
@@ -56,17 +69,23 @@ const pokemonRepository = (function () {
 
   // Function to show details of the Pokémon
   function showDetails(pokemon) {
-    console.log(pokemon); // Log the Pokémon object to the console
+    loadDetails(pokemon).then(() => {
+      console.log(pokemon); // Log the Pokémon object with updated details
+    });
   }
 
   return {
     getAll: getAll,
     add: add,
-    addListItem: addListItem, // Expose addListItem function
+    addListItem: addListItem,
+    loadList: loadList, // Expose loadList function
+    loadDetails: loadDetails, // Expose loadDetails function
   };
 })();
 
-// Using forEach to loop through each Pokémon in the repository and add to the DOM
-pokemonRepository.getAll().forEach((pokemon) => {
-  pokemonRepository.addListItem(pokemon); // Call addListItem for each Pokémon
+// Load the Pokémon list and render it
+pokemonRepository.loadList().then(() => {
+  pokemonRepository.getAll().forEach((pokemon) => {
+    pokemonRepository.addListItem(pokemon); // Call addListItem for each Pokémon
+  });
 });
