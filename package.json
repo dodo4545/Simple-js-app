@@ -1,0 +1,12 @@
+{
+  "name": "simple-js-app",
+  "version": "1.0.0",
+  "description": "A simple JavaScript app",
+  "main": "js/scripts.js",
+  "scripts": {
+    "lint": "eslint js/"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  }
+}
